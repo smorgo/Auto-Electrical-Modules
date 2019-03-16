@@ -1,17 +1,19 @@
 $fn = 30;
 
-demo = false;
+demo = true;
 
-make_lid = false;
+make_lid = true;
 make_body = false;
-make_mount = true;
+make_mount = false;
 make_lock = false;
 number_of_ways = 2;
 
 module_width = 34.9;
 module_inner_length = 84.1;
 module_outer_length = 91.9;
-module_height = 30;
+module_height = 40;
+module_under_clearance = 2;
+
 module_radius = 2;
 slide_depth = 16.8;
 slide_notch_thickness = 2.2;
@@ -28,9 +30,10 @@ lid_inner_radius = 2;
 internal_width = 30;
 internal_length = 78;
 body_screw_diameter = 2.6;
-lid_screw_diameter = 3;
-lid_screw_head_diameter = 6;
-lid_screw_head_depth = 3;
+lid_screw_diameter = 2.2;
+lid_screw_head_diameter = 3.6;
+lid_screw_head_depth = 2;
+lid_screw_recess = 0.5;
 mount_width = 39.6;
 mount_height = 32;
 mount_length = 10;
@@ -45,9 +48,12 @@ fixing_outer_diameter = 10;
 fixing_inner_diameter = 4;
 fixing_depth = 4;
 
+//module_z_offset = -(mount_height - slide_depth)/2-1+module_under_clearance;
+module_z_offset = (mount_height - module_height)/-2 + (slide_depth - mount_height)/2 + module_under_clearance;
+lid_z_offset = (module_z_offset + module_height/2 - lid_depth);
 
 if(demo) {
-    demo(3);
+    demo(2);
 } else {
     main();
 }
@@ -69,8 +75,12 @@ module make_boxes(num) {
     for(i=[0:num -1]) {
         translate([0,i * (mount_width - mount_wall_thickness),0]) {
             make_box();
+        }
+    }
+    for(i=[0:num -1]) {
+        translate([0,i * (mount_width - mount_wall_thickness),0]) {
             lid_offset = (i == num-1) ? 15:0;
-            translate([0,0,module_height-lid_depth-8.9+lid_offset]) {
+            translate([0,0,lid_z_offset+lid_offset+lid_depth/2+3.2]) {
                 rotate([180,0,0]) {
                     difference() {
                         lid();
@@ -142,6 +152,7 @@ module main() {
                 lid();
                 lid_screws();
             }
+//                lid_screws();
         }
     }
 
@@ -261,7 +272,7 @@ module slide_lock(clearance=0) {
     }
 }
 
-module lid(clearance = 0) {
+module lid(clearance = 0.1) {
     mirror([0,0,1]) {
     translate([0,0,-module_height/2]) {
         difference() {
@@ -277,20 +288,20 @@ module lid(clearance = 0) {
 //        cube([20,100,100], center=true);
         }
     }
-    lid_posts();
+    lid_posts(clearance);
     }
 }
 
-module lid_posts() {
-    lid_post();
-    rotate([0,0,180]) lid_post();
-    mirror([1,0,0]) lid_post();
-    mirror([1,0,0]) rotate([0,0,180]) lid_post();
+module lid_posts(clearance) {
+    lid_post(clearance);
+    rotate([0,0,180]) lid_post(clearance);
+    mirror([1,0,0]) lid_post(clearance);
+    mirror([1,0,0]) rotate([0,0,180]) lid_post(clearance);
 }
 
-module lid_post() {
+module lid_post(clearance) {
     translate([module_inner_length/2 - 4, module_width/2 - 4,-lid_depth/2]) {
-        cylinder(h = lid_depth, r = 3, center=true);
+        cylinder(h = lid_depth, d = 6 - clearance, center=true);
     }
 }
 
@@ -302,12 +313,18 @@ module lid_screws() {
 }
 
 module lid_screw() {
-    translate([module_inner_length/2 - 4, module_width/2 - 4, lid_depth/2]) {
+    translate([module_inner_length/2 - 4, module_width/2 - 4, -0.6]) {
+        mirror([0,0,1]) {
+            screw_countersunk(l = lid_depth+0.2,dh=lid_screw_head_diameter,lh=lid_screw_head_depth,ds=lid_screw_diameter,recess=lid_screw_recess);
+        }
+    }
+/*
         cylinder(h = lid_depth + 0.1, d = lid_screw_diameter, center=true);
         translate([0,0,-lid_screw_head_depth]) {
             cylinder(h = lid_screw_head_depth, d = lid_screw_head_diameter, center=true);
         }
     }
+*/
 }
 
 
@@ -316,12 +333,14 @@ module body() {
     difference() {
         union() {
             roundedcube([module_outer_length, module_width, slide_depth], center=true, radius=slide_radius, apply_to="z");
-            roundedcube([module_inner_length, module_width, module_height], center=true, radius=module_radius);
+            translate([0,0,module_z_offset]) {
+                roundedcube([module_inner_length, module_width, module_height], center=true, radius=module_radius);
+            }
         }
         slots();
         locks();
-        translate([0,0,module_height/2]) rotate([180,0,0]) lid(clearance = 0.2);
-        translate([0,0,lid_wall_thickness]) {
+        translate([0,0,module_height/2 + module_z_offset]) rotate([180,0,0]) lid(clearance = 0.2);
+        translate([0,0,lid_wall_thickness + module_z_offset]) {
             cube([internal_length, internal_width - 10, module_height], center=true);
             cube([internal_length - 10, internal_width, module_height], center=true);
         }
@@ -337,7 +356,7 @@ module body_screws() {
 }
 
 module body_screw() {
-    translate([module_inner_length/2 - 4, module_width/2 - 4,lid_depth/2]) {
+    translate([module_inner_length/2 - 4, module_width/2 - 4,lid_depth/2+module_z_offset]) {
         cylinder(h = module_height, d = body_screw_diameter, center=true);
     }
 }
@@ -367,12 +386,18 @@ module locks() {
 
 module lock() {
     translate([(module_inner_length - lock_depth)/2,0,0]) {
+        difference() {
+            translate([0,0,module_z_offset]) cube([lock_depth + 0.1,lock_channel_width, module_height+1], center=true);
+            cube([lock_depth + 0.1, lock_channel_width + 0.1, lock_thickness], center=true);
+        }
+/*
         translate([0,0,lock_height + lock_thickness/2]) {
-            cube([lock_depth + 0.1,lock_channel_width, slide_depth], center=true);
+            cube([lock_depth + 0.1,lock_channel_width, module_height/2], center=true);
         }
         translate([0,0,-lock_height - lock_thickness/2]) {
             cube([lock_depth + 0.1,lock_channel_width, slide_depth], center=true);
         }
+*/
     }
 }
 
@@ -444,3 +469,26 @@ module prism(l, w, h){
         faces=[[0,1,2,3],[5,4,3,2],[0,4,5,1],[0,3,4],[5,2,1]]
     );
 }
+// Initially taken from:
+// https://gist.github.com/Stemer114/af8ef63b8d10287c825f
+// However, I tweaked it slightly to allow for a counterbore.
+module screw_countersunk(
+        l=20,   //length
+        dh = 6,   //head dia
+        lh = 3,   //head length
+        ds = 3.2,  //shaft dia
+        recess = 0
+        )
+{
+    rotate([180,0,0])
+    union() {
+        if(recess > 0) {
+            cylinder(h=recess, d=dh);
+        }
+        translate([0,0,recess]) {
+            cylinder(h=lh, r1=dh/2, r2=ds/2);
+            cylinder(h=l, d=ds);
+        }
+    }
+}
+
