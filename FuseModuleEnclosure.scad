@@ -21,7 +21,8 @@
 *                                                                    *
 **********************************************************************
 
-$fn = 30; // Quality setting. You might want to temporarily reduce this for testing
+// Quality setting. You might want to temporarily reduce this for testing
+$fn = 30; 
 
 /* This file can be used to generate a number of different components.
  * Set the switches to true or false to control which are generated 
@@ -30,25 +31,37 @@ $fn = 30; // Quality setting. You might want to temporarily reduce this for test
  * to lie in the same vertical plane, making printing difficult,
  * if not impossible. */
  
- /* Set demo to true to see all of the components in an 'assembly'.
-  * Don't print this, though.
-  * Set it to false to generate printable parts. */
-demo = true;
+ /* [Select Demo mode or Printable Parts] */
+ // Set to true to see an 'assembly' of parts
+demo = 0; // [0:false, 1:true]
 
-make_lid = false;             // Set to true to generate an enclosure lid
-make_body = true;             // Set to true to generate an enclosure (without the lid)
-make_mount = false;           // Set to true to generate a mounting bracket (set number_of_ways, too)
-number_of_ways = 2;           // Number of 'modules' wide to make the mounting bracket (when make_mount=true).
-make_lock = false;            // Set to true to generate a locking piece for the mounting brackets
-make_standoff = false;        // Set to true to generate a spacer that fits under an MTA 2-way bracket to allow surface mounting. Note that brackets made using make_mount=true don't need this spacer.
-make_insert = false;          // Set to true to generate a PCB holder. Note that this is specific to my application. You'll want to modify the pcb_insert() module to make your own.
-include_wire_holes = false;   // Puts a row of four holes in an enclosure. Specific to my application
+/* [Parts to Generate] */
+// Set to true to generate an enclosure lid
+make_lid = 0; // [0:false, 1:true]             
+// Set to true to generate an enclosure (without the lid)
+make_body = 1; // [0:false, 1:true]
+// Set to true to generate a mounting bracket (set number_of_ways, too)
+make_mount = 0; // [0:false, 1:true]           
+// Number of 'modules' wide to make the mounting bracket (when make_mount=true)
+number_of_ways = 3;           
+// Set to true to generate a locking piece for the mounting brackets
+make_lock = 0; // [0:false, 1:true]            
+// Set to true to generate a spacer that fits under an MTA 2-way bracket to allow surface mounting. Note that brackets made using make_mount=true don't need this spacer
+make_standoff = 0; // [0:false, 1:true]
+// Set to true to generate a PCB holder. Note that this is specific to my application. You'll want to modify the pcb_insert() module to make your own
+make_insert = 0; // [0:false, 1:true]
+// Puts a row of four holes in an enclosure. Specific to my application
+include_wire_holes = 0; // [0:false, 1:true]
 
 // Some commonly used settings
-module_height = 40;           // Sets the overall height of the enclosure (when make_body=true).
-module_under_clearance = 2;   // How much space to allow under the enclosure (with the generated brackets. Adjust for the MTA ones).
-lid_depth = 9;                // Depth of the enclosure lid (when make_body=true or make_lid=true).
-standoff_height = 12;         // Overall height of the standoff (when make_standoff=true). Add 2mm to the amount you want to raise the MTA bracket
+// Sets the overall height of the enclosure (when make_body=true)
+module_height = 40;           
+// How much space to allow under the enclosure (with the generated brackets. Adjust for the MTA ones)
+module_under_clearance = 2;   
+// Depth of the enclosure lid (when make_body=true or make_lid=true)
+lid_depth = 9;                
+// Overall height of the standoff (when make_standoff=true). Add 2mm to the amount you want to raise the MTA bracket
+standoff_height = 12;         
 
 /*===============================================================*/
 
@@ -71,6 +84,7 @@ lid_screw_recess = 0.5;
 
 /* You probably don't need to change these settings, as they're tested for compatibility with
  * the MTA modular system. */
+/* [Hidden] */
 module_width = 34.9;
 module_inner_length = 84.1;
 module_outer_length = 91.9;
