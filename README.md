@@ -10,6 +10,8 @@ The project includes OpenSCAD source code to generate the following components:
 * A lidded enclosure with a parameterised height
 * End brackets with a parameterised number of module ways
 * Module locks for the end brackets [see below](#Module-Locks)
+* Standoff spacer to raise genuine MTA brackets (not needed with brackets generated from this project)
+* An enclosure insert to hold a PCB and micro-relay. This is specific to my application, but may provide a useful starting point for your own design.
 
 You can use modules generated from this project with its accompanying end brackets, or you can use them with the original MTA backets and frames. Conversely, you can use MTA modules with the brackets generated from this project.
 
@@ -19,6 +21,8 @@ The Renders folder in the repository contain a small number of STL files generat
 * [Lid for the enclosure module](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/Module_Lid.stl)
 * [Two-way end bracket](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/mounttest.stl)
 * [Locking clip for the end bracket (two needed per bracket)](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/locktest.stl)
+* [10mm spacer to raise an MTA 2-way bracket](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/standoff.stl)
+* [Insert for a bespoke PCB and relay](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/PCB%20Insert.stl)
 
 ## Intended Use
 I designed this project to complement the MTA Modular Fuse and Relay Holder System, not to replicate it and certainly not to infringe any copyright. Use the project responsibly.
@@ -30,4 +34,9 @@ I had a rethink and generated a separate locking component that clips to the end
 
 It's not an entirely reliable locking system, yet. Under significant pressure, the lock can disengage. A few more iterations of the design may be useful, but it's reasonably effective and could be made more robust with a well-placed dab of glue.
 
-
+## Enclosure Lid Fixings
+The enclosure and lid are designed to use M2 countersunk
+machine screws for fixing and M2 heat inserts in the body
+of the enclosure, inserted with a hot soldering iron.
+If you want to do something different, you may need to
+change some of the screw-related settings.
