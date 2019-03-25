@@ -20,7 +20,7 @@ The Renders folder in the repository contain a small number of STL files generat
 * [40mm tall enclosure module](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/Module_40mm.stl)
 * [Lid for the enclosure module](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/Module_Lid.stl)
 * [Two-way end bracket](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/mounttest.stl)
-* [Locking clip for the end bracket (two needed per bracket)](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/locktest.stl)
+* [Locking clip for the end bracket (two needed per bracket)](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/lock.stl)
 * [10mm spacer to raise an MTA 2-way bracket](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/standoff.stl)
 * [Insert for a bespoke PCB and relay](https://github.com/smorgo/Auto-Electrical-Modules/blob/master/Renders/PCB%20Insert.stl)
 

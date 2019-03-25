@@ -513,12 +513,12 @@ module slide_lock(clearance=0) {
     }
     translate([-1,-3,(mount_height - slide_depth)/2+3.5]) {
         rotate([-90,0,90]) {
-            prism(6,2.5,1.2);
+            prism(6,2.5,1.4);
         }
     }
     translate([-1,3,(mount_height - slide_depth)/2-3.5]) {
         rotate([-90,180,90]) {
-            prism(6,2.5,1.3);
+            prism(6,2.5,1.4);
         }
     }
 }
